@@ -47,7 +47,7 @@ details > summary { cursor:pointer; color:var(--text-secondary); font-size:12.5p
 </style>
 <div class="viz-root">
 <h1>Faculty Adequacy Dashboard</h1>
-<p class="sub">Data as of 2026-08-15 23:03 · A+B = teaching-evidenced faculty · padding = C+D+E · tap a school to drill in · † faded = provisional roster (undercounted source) · v1/v2/v3 = pipeline era that last processed the school</p>
+<p class="sub">Data as of 2026-08-16 06:54 · A+B = teaching-evidenced faculty · padding = C+D+E · tap a school to drill in · † faded = provisional roster (undercounted source) · v1/v2/v3 = pipeline era that last processed the school</p>
 <div class="controls">
   <label>Metric <select id="metric">
     <option value="ratio">A+B per student</option>
@@ -61,6 +61,8 @@ details > summary { cursor:pointer; color:var(--text-secondary); font-size:12.5p
 <div class="detail" id="detail"></div>
 <div id="chart"></div>
 <div class="axisnote" id="axisnote"></div>
+<h2 style="font-size:14.5px;margin:22px 0 6px">Roster composition — who's on the books</h2>
+<div id="comp"></div>
 <div class="legend">
   <span><span class="sw" style="background:var(--s1)"></span>A+B</span>
   <span><span class="sw" style="background:var(--s2)"></span>C</span>
@@ -126,6 +128,19 @@ function render(){
   }
   $('axisnote').textContent = 'bar = ' + m.label + (m.thrOk?' · dashed line = threshold':'');
   $('belowCount').textContent = m.thrOk ? `${below} below threshold (excl. provisional)` : '';
+  const comp = document.getElementById('comp'); comp.innerHTML='';
+  for (const d of rows){
+    const parts=[['A+B',d.A+d.B,'var(--s1)'],['C',d.C,'var(--s2)'],['D',d.D,'var(--s3)'],['E',d.E,'var(--neutral)']];
+    const row=document.createElement('div'); row.className='row'+(selected===d.slug?' sel':'');
+    row.innerHTML=`<div class="lbl">${d.provisional?'<span class="prov">† </span>':''}<span class="vtag">v${d.version}</span>${d.name}</div>
+      <div class="stack">${parts.map(([k,v,c])=>`<div class="seg" style="background:${c}; flex:${v} ${v} 0"></div>`).join('')}</div>
+      <div class="val">${fmt(d.total)}</div>`;
+    row.addEventListener('click', ()=>drill(d));
+    row.querySelector('.stack').addEventListener('mousemove', e=>showTip(e,
+      `<b>${d.name}</b><br>A+B ${fmt(d.A+d.B)} (${d.total?((d.A+d.B)/d.total*100).toFixed(1):0}%)<br>C ${fmt(d.C)} · D ${fmt(d.D)} · E ${fmt(d.E)} · total ${fmt(d.total)}`));
+    row.querySelector('.stack').addEventListener('mouseleave', hideTip);
+    comp.appendChild(row);
+  }
   $('tbl').innerHTML = '<tr><th>School</th><th>Era</th><th>Classified</th><th>Students</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>Total</th><th>A+B/stud</th><th>Evid</th><th>Course-linked</th><th>Prov</th></tr>' +
     rows.map(d=>`<tr><td>${d.name}</td><td>v${d.version}</td><td>${d.classified||''}</td><td>${fmt(d.students)}</td><td>${d.A}</td><td>${d.B}</td><td>${fmt(d.C)}</td><td>${fmt(d.D)}</td><td>${fmt(d.E)}</td><td>${fmt(d.total)}</td><td>${d.ratio.toFixed(3)}</td><td>${d.evidence}</td><td>${d.course_linked}</td><td>${d.provisional?'†':''}</td></tr>`).join('');
 }
