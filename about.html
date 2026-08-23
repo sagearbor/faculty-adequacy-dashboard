@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — faculty-adequacy</title>
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#20242a;--ink2:#5f6a75;--line:#e0dcd2;--card:#fff;--acc:#2d4a68;
+  --surface-1:#fcfcfb;--hair:#ece9e1;
+  --tA:#2a78d6;--tB:#eb6834;--tC:#1baf7a;--tD:#eda100;--tE:#e87ba4;
+  --warn:#b3543a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#14171b;--ink:#e8e6e1;--ink2:#9aa3ac;--line:#2c313a;--card:#1c2026;--acc:#8fb0d4;
+  --surface-1:#1a1a19;--hair:#2c313a;
+  --tA:#3987e5;--tB:#d95926;--tC:#199e70;--tD:#c98500;--tE:#d55181;
+  --warn:#e08a6f;
+}}
+:root[data-theme=dark]{
+  --bg:#14171b;--ink:#e8e6e1;--ink2:#9aa3ac;--line:#2c313a;--card:#1c2026;--acc:#8fb0d4;
+  --surface-1:#1a1a19;--hair:#2c313a;
+  --tA:#3987e5;--tB:#d95926;--tC:#199e70;--tD:#c98500;--tE:#d55181;
+  --warn:#e08a6f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-text-size-adjust:100%;}
+main{max-width:1180px;margin:0 auto;padding:1.1rem .8rem 4rem;}
+h1{font-size:1.35rem;margin:0 0 .2rem;}
+h2{font-size:1rem;margin:1.6rem 0 .5rem;font-weight:650;}
+.sub{color:var(--ink2);font-size:.83rem;margin:0 0 1rem;max-width:70ch;}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.6rem,1fr));gap:.5rem;margin:.6rem 0 1rem;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.6rem .7rem;text-align:center;}
+.tile b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;line-height:1.15;}
+.tile span{font-size:.64rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.045em;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;}
+/* national stacked bar */
+.natbar{display:flex;height:2.4rem;border-radius:7px;overflow:hidden;border:1px solid var(--line);}
+.natbar>div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:.72rem;font-weight:700;
+  min-width:0;overflow:hidden;white-space:nowrap;box-shadow:inset -2px 0 0 var(--card);}
+.natbar>div:last-child{box-shadow:none;}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin:.7rem 0 .2rem;font-size:.78rem;}
+.legend .k{display:inline-flex;align-items:center;gap:.35rem;color:var(--ink2);}
+.legend .sw{width:.8rem;height:.8rem;border-radius:3px;display:inline-block;}
+.controls{position:sticky;top:0;background:var(--bg);padding:.6rem 0 .4rem;z-index:5;}
+input[type=search]{width:100%;padding:.6rem .7rem;font-size:1rem;border:1px solid var(--line);
+  border-radius:9px;background:var(--card);color:var(--ink);}
+.count{font-size:.75rem;color:var(--ink2);margin:.35rem 0 0;}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);-webkit-overflow-scrolling:touch;}
+table{border-collapse:collapse;width:100%;font-size:.82rem;min-width:900px;}
+th,td{padding:.5rem .55rem;text-align:right;white-space:nowrap;border-bottom:1px solid var(--hair);}
+th{position:sticky;top:0;background:var(--card);cursor:pointer;user-select:none;color:var(--ink2);
+  font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.03em;z-index:2;}
+th:hover{color:var(--ink);}
+th.sorted::after{content:" \25B4";}
+th.sorted.desc::after{content:" \25BE";}
+td.school,th.school{text-align:left;white-space:normal;min-width:13rem;position:sticky;left:0;background:var(--card);z-index:1;}
+th.school{z-index:3;}
+tbody tr:hover td{background:color-mix(in srgb,var(--acc) 7%,transparent);}
+.num{font-variant-numeric:tabular-nums;}
+.mini{display:inline-flex;height:.7rem;width:5.5rem;border-radius:3px;overflow:hidden;vertical-align:middle;border:1px solid var(--line);}
+.mini>i{display:block;height:100%;}
+.pillA,.pillB,.pillC,.pillD,.pillE{font-weight:700;}
+.pillA{color:var(--tA)}.pillB{color:var(--tB)}.pillC{color:var(--tC)}.pillD{color:var(--tD)}.pillE{color:var(--tE)}
+.warn{color:var(--warn);font-weight:700;}
+.muted{color:var(--ink2);}
+.foot{color:var(--ink2);font-size:.76rem;margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.8rem;}
+.foot code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:.05rem .3rem;}
+.topnav{font-size:.8rem;margin:.1rem 0 .3rem;}
+.topnav a{color:var(--acc);}
+
+.prose{max-width:70ch;}
+.prose h2{margin-top:1.7rem;}
+.prose p,.prose li{color:var(--ink);}
+.prose ul{padding-left:1.15rem;}
+.prose li{margin:.35rem 0;}
+.bar{height:1.4rem;border-radius:7px;background:var(--surface-1);border:1px solid var(--line);overflow:hidden;margin:.3rem 0 .2rem;}
+.bar>i{display:block;height:100%;background:var(--acc);}
+.src{display:grid;grid-template-columns:auto 1fr;gap:.3rem .7rem;font-size:.86rem;margin:.4rem 0;}
+.src b{color:var(--ink);white-space:nowrap;}
+.tag{display:inline-block;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  color:#fff;background:var(--warn);border-radius:5px;padding:.08rem .4rem;}
+.topnav{font-size:.8rem;margin:.1rem 0 .6rem;}
+.topnav a{color:var(--acc);}
+</style></head><body><main>
+<h1>About &amp; methodology</h1>
+<p class="topnav"><a href="index.html">&larr; back to national dashboard</a></p>
+<div class="prose">
+<p>This is the public, <b>institution-level</b> dashboard's methodology page. No individuals are named in any public output.</p>
+
+<p><b>Faculty Adequacy</b> measures the gap between the faculty a US medical school lists in its public directory
+and the faculty who show <i>observable</i> teaching, research, or clinical evidence in public records. Each
+directory-listed person is placed in one of five ordinal tiers:</p>
+<ul>
+<li><b>Tier A — teaching-evidenced:</b> named as a course / clerkship / thread director in current
+(≤24-month) published curriculum documents.</li>
+<li><b>Tier B — basic-science:</b> preclinical / basic-science faculty classified as teaching-oriented.</li>
+<li><b>Tier C — research-active:</b> ≥3 first/last-author papers per year, or ≥$250k active NIH direct costs,
+or a named institute/center directorship.</li>
+<li><b>Tier D — clinically-active:</b> an active NPI with a practice location near a campus and a
+specialty matching the department.</li>
+<li><b>Tier E — no evidence found:</b> none of the above appears in the public sources checked
+(the "ghost roster" signal).</li>
+</ul>
+
+<h2>How the data is gathered</h2>
+<p>Guiding principle: <i>agents build programs; programs do the work.</i> Large language models are used only to
+generate the per-school directory scrapers and to read curriculum documents; everything else — cross-referencing,
+scoring, and tiering — is deterministic Python. Each directory name is cross-referenced against public sources:</p>
+<div class="src">
+<b>Directories</b><span>Each school's public faculty directory (roster of names, titles, departments).</span>
+<b>NPPES</b><span>National Provider Identifier registry — clinical practice, location, specialty.</span>
+<b>NIH RePORTER</b><span>Active federal research grants and direct-cost amounts.</span>
+<b>PubMed / OpenAlex / ORCID</b><span>Publication record and authorship position over time.</span>
+<b>Curricula</b><span>Published course/clerkship/thread listings — the only source that earns Tier A.</span>
+</div>
+<p>Records are matched across sources by name + affiliation with conservative entity resolution (a suffix
+mismatch — Jr/Sr/II/III — is never merged). The pipeline is idempotent and resumable; every figure here is a
+read-only snapshot of the current database.</p>
+
+
+<h2>How complete is this?</h2>
+<p><b>72 of 204</b> configured US medical schools currently have a
+banked faculty roster (≥20 records) — about <b>35%</b>. Those rosters hold
+<b>76,681</b> directory faculty, of whom <b>72,245</b> are tier-classified.</p>
+<div class="bar" role="img" aria-label="35 percent of schools have a roster"><i style="width:35.3%"></i></div>
+<p class="sub">Coverage grows as directory-URL discovery and extraction improve; the remaining schools are mostly
+blocked on hard-to-crawl directories (search-only portals, JS/SPA rosters, anti-bot walls) rather than on the
+classification itself.</p>
+
+
+<h2>Known issues &amp; limitations</h2>
+<ul>
+<li><b>Provisional &amp; incomplete.</b> This is an experimental pipeline. Rosters marked known-incomplete at the
+source yield <i>lower-bound</i> ratios — the true Tier-A/B share can only be higher.</li>
+<li><b>Coverage gaps.</b> Some schools aren't in yet because their directory is a search-only portal, a
+JavaScript/SPA roster (e.g. VIVO research portals), or behind an anti-bot wall. Those show as missing, not as zero.</li>
+<li><b>Single-department URLs.</b> A directory URL that points at one department can undercount a school until the
+whole-school roster is discovered.</li>
+<li><b>External-source coverage.</b> Tiering depends on how consistently a person appears in PubMed / NIH RePORTER /
+NPPES under their name &amp; affiliation. Inconsistent records can under-tier someone who is genuinely active —
+which is exactly what the per-person "how to raise it" steps address.</li>
+<li><b>Entity resolution.</b> Name-based matching can occasionally mis-merge or mis-split near-identical names.</li>
+<li><b>Not a quality judgment.</b> Tiers reflect what public federal/scholarly sources currently show, not the
+quality of anyone's teaching or the institution's instruction.</li>
+</ul>
+
+
+<h2>Manuscript</h2>
+<p>A manuscript describing the method and findings is <b>in preparation</b>. A link will appear here on release.</p>
+
+</div>
+</main></body></html>
