@@ -37,7 +37,7 @@ h2{font-size:1rem;margin:1.6rem 0 .5rem;font-weight:650;}
 /* national stacked bar */
 .natbar{display:flex;height:2.4rem;border-radius:7px;overflow:hidden;border:1px solid var(--line);}
 .natbar>div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:.72rem;font-weight:700;
-  min-width:0;overflow:hidden;white-space:nowrap;box-shadow:inset -2px 0 0 var(--card);}
+  min-width:1.7em;overflow:hidden;white-space:nowrap;box-shadow:inset -2px 0 0 var(--card);}
 .natbar>div:last-child{box-shadow:none;}
 .legend{display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin:.7rem 0 .2rem;font-size:.78rem;}
 .legend .k{display:inline-flex;align-items:center;gap:.35rem;color:var(--ink2);}
@@ -79,7 +79,7 @@ Every scored column is computed by the deterministic <code>scoring/</code> funct
 
 <h2>National tier distribution</h2>
 <div class="card">
-<div class="natbar" role="img" aria-label="National tier distribution"><div style="width:0.086%;background:var(--tA)" title="Tier A — 62 (0.1%)"></div><div style="width:2.822%;background:var(--tB)" title="Tier B — 2,039 (2.8%)"></div><div style="width:14.902%;background:var(--tC)" title="Tier C — 10,766 (14.9%)">C 15%</div><div style="width:10.730%;background:var(--tD)" title="Tier D — 7,752 (10.7%)">D 11%</div><div style="width:71.460%;background:var(--tE)" title="Tier E — 51,626 (71.5%)">E 71%</div></div>
+<div class="natbar" role="img" aria-label="National tier distribution"><div class="seg" style="width:0.086%;background:var(--tA)" title="Tier A — 62 (0.1%)">A</div><div class="seg" style="width:2.822%;background:var(--tB)" title="Tier B — 2,039 (2.8%)">B</div><div class="seg" style="width:14.902%;background:var(--tC)" title="Tier C — 10,766 (14.9%)">C 15%</div><div class="seg" style="width:10.730%;background:var(--tD)" title="Tier D — 7,752 (10.7%)">D 11%</div><div class="seg" style="width:71.460%;background:var(--tE)" title="Tier E — 51,626 (71.5%)">E 71%</div></div>
 <div class="legend"><span class="k"><span class="sw" style="background:var(--tA)"></span>Tier A · Teaching-evidenced</span><span class="k"><span class="sw" style="background:var(--tB)"></span>Tier B · Basic-science</span><span class="k"><span class="sw" style="background:var(--tC)"></span>Tier C · Research-active</span><span class="k"><span class="sw" style="background:var(--tD)"></span>Tier D · Clinically-active</span><span class="k"><span class="sw" style="background:var(--tE)"></span>Tier E · No evidence found</span></div>
 <p class="sub" style="margin:.7rem 0 0">Tiers are ordinal: <b>A</b> teaching-evidenced · <b>B</b> basic-science ·
 <b>C</b> research-active · <b>D</b> clinically-active · <b>E</b> no public evidence found.
