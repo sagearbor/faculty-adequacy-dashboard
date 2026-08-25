@@ -63,6 +63,18 @@ tbody tr:hover td{background:color-mix(in srgb,var(--acc) 7%,transparent);}
 .pillA,.pillB,.pillC,.pillD,.pillE{font-weight:700;}
 .pillA{color:var(--tA)}.pillB{color:var(--tB)}.pillC{color:var(--tC)}.pillD{color:var(--tD)}.pillE{color:var(--tE)}
 .warn{color:var(--warn);font-weight:700;}
+/* Tier-A measurability callout + per-school indicator.
+   Never color-only: every state also carries a word ("yes" / "no — not measured"),
+   so it survives colorblind viewing and greyscale printing. */
+.callout{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:9px;
+  background:var(--surface-1);padding:.7rem .85rem;margin:.85rem 0 0;font-size:.82rem;line-height:1.55;}
+.callout .hdr{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--warn);font-weight:700;margin-bottom:.3rem;}
+.callout p{margin:.35rem 0 0;}
+.callout p:first-of-type{margin-top:0;}
+.srcyes{color:var(--ink2);}
+.srcno{color:var(--warn);font-weight:700;}
+.notmeasured{color:var(--ink2);font-style:italic;}
 .muted{color:var(--ink2);}
 .foot{color:var(--ink2);font-size:.76rem;margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.8rem;}
 .foot code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:.05rem .3rem;}
@@ -124,6 +136,10 @@ read-only snapshot of the current database.</p>
 banked faculty roster (≥20 records) — about <b>36%</b>. Those rosters hold
 <b>76,727</b> directory faculty, of whom <b>72,345</b> are tier-classified.</p>
 <div class="bar" role="img" aria-label="36 percent of schools have a roster"><i style="width:35.8%"></i></div>
+<p><b>50 of 73</b> schools with data have a
+<b>public curriculum source</b> curated (68%) — Tier A is only measurable for
+those. At the other <b>23</b>, a Tier A of zero means
+<b>not measured</b>, not "no teaching faculty".</p>
 <p class="sub">Coverage grows as directory-URL discovery and extraction improve; the remaining schools are mostly
 blocked on hard-to-crawl directories (search-only portals, JS/SPA rosters, anti-bot walls) rather than on the
 classification itself.</p>
@@ -131,6 +147,13 @@ classification itself.</p>
 
 <h2>Known issues &amp; limitations</h2>
 <ul>
+<li><b>Tier A measures curriculum-document coverage as much as it measures faculty.</b> Tier A is earned only by
+being named in a public curriculum document, and that document has to be located and curated per school first.
+Only <b>50 of 73</b> schools with data currently have
+such a source; the other <b>23</b> show Tier A as <i>not measured</i>.
+Curating one more curriculum URL raises the national Tier A count with nothing having changed at any school — the
+count has jumped sharply on exactly that basis — so Tier A must never be compared between a school that has a
+curriculum source and one that does not.</li>
 <li><b>Provisional &amp; incomplete.</b> This is an experimental pipeline. Rosters marked known-incomplete at the
 source yield <i>lower-bound</i> ratios — the true Tier-A/B share can only be higher.</li>
 <li><b>Coverage gaps.</b> Some schools aren't in yet because their directory is a search-only portal, a
