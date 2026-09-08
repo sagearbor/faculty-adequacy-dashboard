@@ -8,18 +8,28 @@
   --surface-1:#fcfcfb;--hair:#ece9e1;
   --tA:#2a78d6;--tB:#eb6834;--tC:#1baf7a;--tD:#eda100;--tE:#e87ba4;
   --warn:#b3543a;
+  /* explorer "Color by" encodings — see the palette note above _JS. */
+  --cLCME:#2a78d6;--cCOCA:#eb6834;
+  --rgNE:#eda100;--rgMW:#e87ba4;--rgS:#008300;--rgW:#4a3aa7;--rgOther:#5f6a75;
+  --sz1:#86b6ef;--sz2:#5598e7;--sz3:#2a78d6;--sz4:#1c5cab;--sz5:#0d366b;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
   --bg:#14171b;--ink:#e8e6e1;--ink2:#9aa3ac;--line:#2c313a;--card:#1c2026;--acc:#8fb0d4;
   --surface-1:#1a1a19;--hair:#2c313a;
   --tA:#3987e5;--tB:#d95926;--tC:#199e70;--tD:#c98500;--tE:#d55181;
   --warn:#e08a6f;
+  --cLCME:#3987e5;--cCOCA:#d95926;
+  --rgNE:#c98500;--rgMW:#d55181;--rgS:#008300;--rgW:#9085e9;--rgOther:#9aa3ac;
+  --sz1:#184f95;--sz2:#256abf;--sz3:#3987e5;--sz4:#6da7ec;--sz5:#9ec5f4;
 }}
 :root[data-theme=dark]{
   --bg:#14171b;--ink:#e8e6e1;--ink2:#9aa3ac;--line:#2c313a;--card:#1c2026;--acc:#8fb0d4;
   --surface-1:#1a1a19;--hair:#2c313a;
   --tA:#3987e5;--tB:#d95926;--tC:#199e70;--tD:#c98500;--tE:#d55181;
   --warn:#e08a6f;
+  --cLCME:#3987e5;--cCOCA:#d95926;
+  --rgNE:#c98500;--rgMW:#d55181;--rgS:#008300;--rgW:#9085e9;--rgOther:#9aa3ac;
+  --sz1:#184f95;--sz2:#256abf;--sz3:#3987e5;--sz4:#6da7ec;--sz5:#9ec5f4;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
@@ -80,6 +90,63 @@ tbody tr:hover td{background:color-mix(in srgb,var(--acc) 7%,transparent);}
 .foot code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:.05rem .3rem;}
 .topnav{font-size:.8rem;margin:.1rem 0 .3rem;}
 .topnav a{color:var(--acc);}
+/* ── correlation explorer ──
+   Default: one hue for every point (schools are not tiers — reusing the tier
+   palette by default would imply a school "is" a tier). Identity that matters
+   is carried by shape (accreditor) and fill-vs-hollow (reliability), each of
+   which also appears as a word in the legend and the tooltip, so nothing is
+   color-only.
+
+   "Color by" overrides the hue per point through --ptc, set on the point's
+   <g>. Both the fill (solid = reliable) and the stroke (hollow = thin) read
+   from the same custom property, so the reliability encoding survives every
+   color mode; shape keeps carrying accreditor in every mode too. */
+.sc-controls{display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center;font-size:.8rem;margin:0 0 .7rem;}
+/* min-width:0 on both the label and the select is what lets a long option
+   label ("Active NIH $ via matched faculty (FY ≥ 2025) (n = 92)") shrink on a
+   phone instead of pushing the controls row past the card. */
+.sc-controls label{display:inline-flex;align-items:center;gap:.35rem;color:var(--ink2);max-width:100%;min-width:0;}
+.sc-controls select{font:inherit;padding:.28rem .4rem;border:1px solid var(--line);border-radius:7px;
+  background:var(--card);color:var(--ink);max-width:100%;min-width:0;flex:0 1 auto;}
+.chartwrap{position:relative;}
+svg.sc{width:100%;height:auto;display:block;overflow:visible;}
+.sc .grid{stroke:var(--hair);stroke-width:1;}
+.sc .axis text{fill:var(--ink2);font-size:.7rem;}
+.sc .axis .ttl{fill:var(--ink2);font-size:.72rem;font-weight:600;}
+.sc .pt{fill:var(--ptc,var(--acc));stroke:var(--card);stroke-width:2;}
+.sc .pt.thin{fill:none;stroke:var(--ptc,var(--acc));stroke-width:1.5;opacity:.55;}
+.sc .hit{fill:transparent;cursor:pointer;}
+.sc .pt-g:focus{outline:none;}
+.sc .pt-g:focus .pt,.sc .pt-g:hover .pt{stroke:var(--ink);stroke-width:2;}
+.sc .ci{stroke:var(--ptc,var(--acc));stroke-width:1.5;opacity:.35;}
+.sc .empty{fill:var(--ink2);font-size:.78rem;}
+/* Color-by legend. Each key is a button that isolates its group — the
+   secondary encoding that stops any pair of hues from having to carry the
+   distinction alone (and a genuinely useful filter besides). */
+.cbleg{display:flex;flex-wrap:wrap;gap:.35rem .8rem;align-items:center;margin:0 0 .55rem;font-size:.76rem;}
+.cbleg .lab{color:var(--ink2);}
+.cbleg button{display:inline-flex;align-items:center;gap:.35rem;background:none;border:1px solid transparent;
+  border-radius:6px;padding:.1rem .3rem;font:inherit;color:var(--ink2);cursor:pointer;}
+.cbleg button:hover,.cbleg button:focus-visible{border-color:var(--line);color:var(--ink);}
+.cbleg button[aria-pressed=true]{border-color:var(--acc);color:var(--ink);font-weight:650;}
+.cbleg .dim{opacity:.42;}
+.cbleg .sw{width:.75rem;height:.75rem;border-radius:50%;display:inline-block;}
+.cbleg .ramp{display:inline-flex;height:.62rem;border-radius:3px;overflow:hidden;border:1px solid var(--line);}
+.cbleg .ramp i{display:block;width:1.5rem;height:100%;}
+.cbleg[hidden],.bubleg[hidden]{display:none;}
+.bubleg{display:flex;flex-wrap:wrap;align-items:flex-end;gap:.7rem;margin:0 0 .55rem;font-size:.72rem;color:var(--ink2);}
+.bubleg svg{display:block;overflow:visible;}
+.bubleg .bk{display:flex;flex-direction:column;align-items:center;gap:.2rem;}
+.tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line);
+  border-radius:8px;padding:.4rem .55rem;font-size:.75rem;max-width:16rem;color:var(--ink);
+  box-shadow:0 2px 10px rgba(0,0,0,.14);z-index:6;line-height:1.45;}
+.tip b{font-variant-numeric:tabular-nums;}
+.tip .nm{display:block;color:var(--ink2);font-weight:600;margin-bottom:.15rem;}
+.stat{font-size:.78rem;color:var(--ink2);margin:.55rem 0 0;font-variant-numeric:tabular-nums;}
+.sm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.7rem;}
+.sm-grid figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.6rem .5rem .4rem;}
+.sm-grid figcaption{font-size:.72rem;color:var(--ink2);text-align:center;margin-top:.15rem;}
+.shapekey{display:inline-block;width:.7rem;height:.7rem;vertical-align:-1px;}
 
 .prose{max-width:70ch;}
 .prose h2{margin-top:1.7rem;}
@@ -132,13 +199,13 @@ read-only snapshot of the current database.</p>
 
 
 <h2>How complete is this?</h2>
-<p><b>91 of 204</b> configured US medical schools currently have a
-banked faculty roster (≥20 records) — about <b>45%</b>. Those rosters hold
-<b>83,145</b> directory faculty, of whom <b>80,628</b> are tier-classified.</p>
-<div class="bar" role="img" aria-label="45 percent of schools have a roster"><i style="width:44.6%"></i></div>
-<p><b>76 of 91</b> schools with data have a
-<b>public curriculum source</b> curated (84%) — Tier A is only measurable for
-those. At the other <b>15</b>, a Tier A of zero means
+<p><b>174 of 204</b> configured US medical schools currently have a
+banked faculty roster (≥20 records) — about <b>85%</b>. Those rosters hold
+<b>122,133</b> directory faculty, of whom <b>109,020</b> are tier-classified.</p>
+<div class="bar" role="img" aria-label="85 percent of schools have a roster"><i style="width:85.3%"></i></div>
+<p><b>122 of 174</b> schools with data have a
+<b>public curriculum source</b> curated (70%) — Tier A is only measurable for
+those. At the other <b>52</b>, a Tier A of zero means
 <b>not measured</b>, not "no teaching faculty".</p>
 <p class="sub">Coverage grows as directory-URL discovery and extraction improve; the remaining schools are mostly
 blocked on hard-to-crawl directories (search-only portals, JS/SPA rosters, anti-bot walls) rather than on the
@@ -149,11 +216,20 @@ classification itself.</p>
 <ul>
 <li><b>Tier A measures curriculum-document coverage as much as it measures faculty.</b> Tier A is earned only by
 being named in a public curriculum document, and that document has to be located and curated per school first.
-Only <b>76 of 91</b> schools with data currently have
-such a source; the other <b>15</b> show Tier A as <i>not measured</i>.
+Only <b>122 of 174</b> schools with data currently have
+such a source; the other <b>52</b> show Tier A as <i>not measured</i>.
 Curating one more curriculum URL raises the national Tier A count with nothing having changed at any school — the
 count has jumped sharply on exactly that basis — so Tier A must never be compared between a school that has a
 curriculum source and one that does not.</li>
+<li><b>The correlation explorer is gated, and its NIH axis is not an institutional total.</b> The
+&ldquo;what correlates with adequacy?&rdquo; scatter on the dashboard plots only the
+<b>38 of 174</b> schools that clear a reliability gate
+(≥100 directory records, ≥50% evidence
+coverage, ghost-rate confidence interval ≤ 15 pp); the other <b>136</b> are hidden unless you ask
+for them, because a 20-record single-department scrape produces a &ldquo;0%&rdquo; that looks like a finding.
+NIH dollars on that chart are active awards flowing through the directory faculty we <i>matched</i>, not the
+institution's NIH portfolio. LCME and DO rosters differ structurally — DO rosters are small and preclinical, LCME
+rosters carry thousands of clinical affiliates — so compare within an accreditor, never across.</li>
 <li><b>Provisional &amp; incomplete.</b> This is an experimental pipeline. Rosters marked known-incomplete at the
 source yield <i>lower-bound</i> ratios — the true Tier-A/B share can only be higher.</li>
 <li><b>Coverage gaps.</b> Some schools aren't in yet because their directory is a search-only portal, a
